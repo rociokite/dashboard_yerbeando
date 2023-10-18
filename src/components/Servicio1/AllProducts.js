@@ -4,6 +4,20 @@ import './AllProducts.css';
 import PropTypes from 'prop-types';
 
 function AllProducts(props) {
+  const [usersData, setUsersData] = useState({ count: 0, users: [] });
+
+  useEffect(() => {
+    fetch('https://yerbeando.onrender.com/services/usuarios')
+      .then(response => response.json())
+      .then(data => {
+        setUsersData(data);
+      })
+      .catch(error => {
+        console.error('Error al cargar los usuarios', error);
+      });
+  }, []);
+
+  //usamos endpoint de productos
   const [listProductsData, setListProductsData] = useState({ count: 0, countByCategory: [], products: [] });
 
   useEffect(() => {
@@ -23,7 +37,6 @@ function AllProducts(props) {
 
   return (
     <div className="recuadro">
-      {console.log(listProductsData)}
 
       <html lang="es">
         <body>
@@ -152,7 +165,7 @@ function AllProducts(props) {
                           <div className="row no-gutters align-items-center">
                             <div className="col mr-2">
                               <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">Products in Data Base</div>
-                              <div className="h5 mb-0 font-weight-bold text-gray-800">135</div>
+                              <div className="h5 mb-0 font-weight-bold text-gray-800">{listProductsData.count}</div>
                             </div>
                             <div className="col-auto">
                               <i className="fas fa-clipboard-list fa-2x text-gray-300"></i>
@@ -186,7 +199,7 @@ function AllProducts(props) {
                           <div className="row no-gutters align-items-center">
                             <div className="col mr-2">
                               <div className="text-xs font-weight-bold text-warning text-uppercase mb-1">Users quantity</div>
-                              <div className="h5 mb-0 font-weight-bold text-gray-800">38</div>
+                              <div className="h5 mb-0 font-weight-bold text-gray-800">{usersData.count}</div>
                             </div>
                             <div className="col-auto">
                               <i className="fas fa-user-check fa-2x text-gray-300"></i>
