@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import './AllProducts.css';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
+
+ // yerbeando.onrender.com
+ // localhost:3002
 
 function AllProducts(props) {
   const [usersData, setUsersData] = useState({ count: 0, users: [] });
 
   useEffect(() => {
-    fetch('https://yerbeando.onrender.com/services/usuarios')
+    fetch('http://localhost:3002/services/usuarios')
       .then(response => response.json())
       .then(data => {
         setUsersData(data);
@@ -21,13 +24,30 @@ function AllProducts(props) {
   const [listProductsData, setListProductsData] = useState({ count: 0, countByCategory: [], products: [] });
 
   useEffect(() => {
-    fetch('https://yerbeando.onrender.com/services/productos')
+    fetch('http://localhost:3002/services/productos')
       .then(response => response.json())
       .then(data => {
         setListProductsData({
           count: data.count,
           countByCategory: data.countByCategory,
           products: data.products
+        });
+
+      })
+      .catch(error => {
+        console.error('Error al obtener datos', error);
+      });
+  }, []);
+
+  //usamos endpoint de categorias
+  const [listCategorysData, setlistCategorysData] = useState({ Category: [] });
+
+  useEffect(() => {
+    fetch('http://localhost:3002/services/categorias')
+      .then(response => response.json())
+      .then(data => {
+        setlistCategorysData({
+          count: data.count
         });
       })
       .catch(error => {
@@ -101,51 +121,7 @@ function AllProducts(props) {
             <div id="content-wrapper" className="d-flex flex-column">
 
               {/* Main Content */}
-              <div id="content">
-
-                {/* Topbar */}
-                <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-                  {/* Sidebar Toggle (Topbar) */}
-                  <button id="sidebarToggleTop" className="btn btn-link d-md-none rounded-circle mr-3">
-                    <i className="fa fa-bars"></i>
-                  </button>
-
-                  {/* Topbar Navbar */}
-                  <ul className="navbar-nav ml-auto">
-
-                    {/* Nav Item - Alerts */}
-                    <li className="nav-item dropdown no-arrow mx-1">
-                      <a className="nav-link dropdown-toggle" href="/" id="alertsDropdown">
-                        <i className="fas fa-bell fa-fw"></i>
-                        {/* Counter - Alerts */}
-                        <span className="badge badge-danger badge-counter">3+</span>
-                      </a>
-                    </li>
-
-                    {/* Nav Item - Messages */}
-                    <li className="nav-item dropdown no-arrow mx-1">
-                      <a className="nav-link dropdown-toggle" href="/" id="messagesDropdown">
-                        <i className="fas fa-envelope fa-fw"></i>
-                        {/* Counter - Messages */}
-                        <span className="badge badge-danger badge-counter">7</span>
-                      </a>
-                    </li>
-
-                    <div className="topbar-divider d-none d-sm-block"></div>
-
-                    {/* Nav Item - User Information */}
-                    <li className="nav-item dropdown no-arrow">
-                      <a className="nav-link dropdown-toggle" href="/" id="userDropdown">
-                        <span className="mr-2 d-none d-lg-inline text-gray-600 small">Walter White</span>
-                        <img className="img-profile rounded-circle" src="assets/images/dummy-avatar.jpg" width="60" alt="profile" />
-                      </a>
-                    </li>
-
-                  </ul>
-
-                </nav>
-                {/* End of Topbar */}
+              <div id="content">                 
 
                 {/* Begin Page Content */}
                 <div className="container-fluid">
@@ -181,8 +157,8 @@ function AllProducts(props) {
                         <div className="card-body">
                           <div className="row no-gutters align-items-center">
                             <div className="col mr-2">
-                              <div className="text-xs font-weight-bold text-success text-uppercase mb-1">Amount in products</div>
-                              <div className="h5 mb-0 font-weight-bold text-gray-800">$546.456</div>
+                              <div className="text-xs font-weight-bold text-success text-uppercase mb-1">Categorys quantity</div>
+                              <div className="h5 mb-0 font-weight-bold text-gray-800">{listCategorysData.count}</div>
                             </div>
                             <div className="col-auto">
                               <i className="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -215,14 +191,19 @@ function AllProducts(props) {
                     <div className="col-lg-6 mb-4">
                       <div className="card shadow mb-4">
                         <div className="card-header py-3">
-                          <h6 className="m-0 font-weight-bold text-primary">Last product in Data Dase</h6>
+                          <h6 className="m-0 font-weight-bold text-primary">Last product in Data Base</h6>
                         </div>
                         <div className="card-body">
-                          <div className="text-center">
-                            <img className="img-fluid px-3 px-sm-4 mt-3 mb-4" style={{ width: '25rem' }} src="assets/images/product_dummy.svg" alt="image dummy" />
+                          <div className="text-center"> 
+                              <img
+                                className="img-fluid px-3 px-sm-4 mt-3 mb-4"
+                                style={{ width: '25rem' }}
+                                src=""
+                                alt="imagen del producto"
+                              />
                           </div>
-                          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores, consequatur explicabo officia inventore libero veritatis iure voluptate reiciendis a magnam, vitae, aperiam voluptatum non corporis quae dolorem culpa exercitationem ratione?</p>
-                          <a target="_blank" rel="nofollow" href="/">View product detail</a>
+                          <p>"Descripción no disponible"</p>
+                          <a target="_blank" rel="nofollow" href="/"> "Descripción no disponible"</a>
                         </div>
                       </div>
                     </div>
