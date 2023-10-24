@@ -19,7 +19,29 @@ function AllProducts(props) {
         console.error('Error al cargar los usuarios', error);
       });
   }, []);
+ //usamos endpoint de usuarios
+ const [listUsersData, setListUsersData] = useState({ count: 0, users: [] });
 
+ useEffect(() => {
+   fetch('http://localhost:3002/services/usuarios')
+     .then(response => response.json())
+     .then(data => {
+       const highestUserId = data.users.reduce((maxId, users) => {      //- FUERA DE USO
+         return users.id > maxId ? users.id : maxId;
+       }, -1); // Inicializamos en -1 para asegurarnos de obtener el ID más alto
+ 
+       const highestUsers = data.users.find(user => user.id === highestUserId);   //- FUERA DE USO
+       console.log(highestUsers)  
+ 
+       setListUsersData({
+         count: data.count,
+         users: [highestUsers], //  FUERA DE USO
+       });
+     })
+     .catch(error => {
+       console.error('Error al obtener datos', error);
+     });
+ }, []);
   //usamos endpoint de productos
   const [listProductsData, setListProductsData] = useState({ count: 0, countByCategory: [], products: [] });
 
@@ -217,22 +239,33 @@ function AllProducts(props) {
                     <div className="col-lg-6 mb-4">
                       <div className="card shadow mb-4">
                         <div className="card-header py-3">
-                          <h6 className="m-0 font-weight-bold text-primary">Last product in Data Base </h6>
+                          <h6 className="m-0 font-weight-bold text-primary">Last product in Data Base</h6>
                         </div>
                         <div className="card-body">
-                          <div className="text-center"> 
+                          <div className="text-center">
+                            {listProductsData.products[0] ? (
                               <img
                                 className="img-fluid px-3 px-sm-4 mt-3 mb-4"
                                 style={{ width: '25rem' }}
-                                src= {ProductIdData.product.imagen}     
+                                src={listProductsData.products[0].imagen}
                                 alt="imagen del producto"
                               />
+                            ) : (
+                              <p>Cargando...</p>
+                            )}
                           </div>
-                          <p>{ProductIdData.product.nombre}  </p>          
-                          <a target="_blank" rel="nofollow" href="/"> {ProductIdData.product.descripcion}  </a>    
+                          {listProductsData.products[0] ? (
+                            <div>
+                              <p>{listProductsData.products[0].nombre}</p>
+                              <p>{listProductsData.products[0].descripcion}</p>
+                            </div>
+                          ) : (
+                            <p>Cargando datos de producto...</p>
+                          )}
                         </div>
                       </div>
                     </div>
+               
                     {/* Categories in DB */}
                     <div className="col-lg-6 mb-4">
                       <div className="card shadow mb-4">
@@ -270,6 +303,36 @@ function AllProducts(props) {
                         </div>
                       </div>
                     </div>
+                     {/* Last User in DB */}
+                <div className="col-lg-6 mb-4">
+                      <div className="card shadow mb-4">
+                          <div className="card-header py-3">
+                            <h6 className="m-0 font-weight-bold text-primary">Last user in Data Base</h6>
+                          </div>
+                          <div className="card-body">
+                            <div className="text-center">
+                              {listUsersData.users[0] ? (
+                                <img
+                                  className="img-fluid px-3 px-sm-4 mt-3 mb-4"
+                                  style={{ width: '25rem' }}
+                                  src={listUsersData.users[0].imagen}
+                                  alt="imagen del producto"
+                                />
+                              ) : (
+                                <p>Cargando...</p>
+                              )}
+                            </div>
+                            {listUsersData.users[0] ? (
+                              <div>
+                                <p>{listUsersData.users[0].nombre}</p>
+                                <p>{listUsersData.users[0].email}</p>
+                              </div>
+                            ) : (
+                              <p>Cargando datos de producto...</p>
+                            )}
+                          </div>
+                        </div>
+                      </div>   
                   </div>
                 </div>
               </div>
