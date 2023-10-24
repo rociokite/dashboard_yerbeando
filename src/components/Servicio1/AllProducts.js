@@ -224,12 +224,12 @@ function AllProducts(props) {
                               <img
                                 className="img-fluid px-3 px-sm-4 mt-3 mb-4"
                                 style={{ width: '25rem' }}
-                                src= {ProductIdData.product.imagen}      
+                                src= {listProductsData.products[0].imagen}      
                                 alt="imagen del producto"
                               />
                           </div>
-                          <p>{ProductIdData.product.nombre}  </p>          
-                          <a target="_blank" rel="nofollow" href="/"> {ProductIdData.product.descripcion}  </a>    
+                          <p>{listProductsData.products[0].nombre}  </p>          
+                          <a target="_blank" rel="nofollow" href="/"> {listProductsData.products[0].descripcion}  </a>    
                         </div>
                       </div>
                     </div>
